@@ -1,17 +1,15 @@
 # 使用 Ubuntu 为基础镜像
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
-# 更新软件包列表并安装 curl 和其他必要工具
-RUN apt-get update && apt-get install -y curl software-properties-common
+# 更新软件包列表并安装所需软件
+RUN apt-get update && apt-get install -y curl software-properties-common xsel xclip xvfb screen \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g @nocturne-xyz/nocturne-setup \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 使用 NodeSource 官方脚本安装 Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
+# 设置工作目录（根据需要修改）
+WORKDIR /app
 
-# 安装其他必要的软件
-RUN apt-get install -y xsel xclip xvfb screen
-
-# 全局安装 npm 包
-RUN npm install -g @nocturne-xyz/nocturne-setup
-
-# 其他配置（如环境变量等）
+# 设置容器启动时执行的命令，以保持容器运行
+CMD ["tail", "-f", "/dev/null"]
