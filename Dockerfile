@@ -1,12 +1,12 @@
 # 使用 Ubuntu 为基础镜像
-FROM ubuntu:20.04
+FROM ubuntu:latest
 
-# 安装 curl 和 sudo（Ubuntu 镜像可能不包含这些工具）
-RUN apt-get update && apt-get install -y curl sudo
+# 更新软件包列表并安装 curl 和其他必要工具
+RUN apt-get update && apt-get install -y curl software-properties-common
 
-# 安装 Node.js （可以使用 NVM 或直接安装）
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - \
-    && sudo apt-get install -y nodejs
+# 使用 NodeSource 官方脚本安装 Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install -y nodejs
 
 # 安装其他必要的软件
 RUN apt-get install -y xsel xclip xvfb screen
@@ -14,3 +14,4 @@ RUN apt-get install -y xsel xclip xvfb screen
 # 全局安装 npm 包
 RUN npm install -g @nocturne-xyz/nocturne-setup
 
+# 其他配置（如环境变量等）
